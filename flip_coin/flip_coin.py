@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 C0 = 0.4
 C1 = 0.6
 # This means we assume the coin has a 60% chance of being biased, and has a 40% chance of being fair.
-# We also suppose that a biased coin has an 80% chance of flipping to heads. (that is why line 30 has a 0.8)
+# We also suppose that a biased coin has an 80% chance of flipping to heads. (that is why line 20 has a 0.8)
 
 # the number of heads
 num = 7
