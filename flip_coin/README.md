@@ -1,10 +1,16 @@
 # An example of Bayesian Decision Theory
 
+![Ba](/Image/Bayes.png)
+
+---
+
 ## Event explanation in code:
 * C 代表 "在投擲硬幣之前，認為硬幣是否 biased "
 * x 代表 "出現 num 次正面且總共投擲 10 次"
 
-![Ba](/Image/Bayes.png)
+## Loss function:
+
+![loss](/Image/loss.png)
 
 > <details>
 >  <summary>Reference</summary>

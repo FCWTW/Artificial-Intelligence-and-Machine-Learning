@@ -10,6 +10,12 @@ C1 = 0.6
 # the number of heads
 num = 7
 
+# define loss function: λ
+Lambda00 = 0
+Lambda01 = 10
+Lambda10 = 5
+Lambda11 = 0
+
 # define likelihood function: p(x|C)
 def likelihood(num, theta):
     return theta**num * (1-theta)**(10-num)
@@ -29,10 +35,21 @@ def posterior(num, C0, C1):
     posterior_1 = numerator_1 / evidence
     return posterior_0, posterior_1
 
+# calculate expected risk: R(a|x)
+def risk(L1, L2, p1, p2):
+    return L1*p1+L2*p2
+
 if __name__ == "__main__":
     posterior_0, posterior_1 = posterior(num, C0, C1)
     print(f"Posterior probability of fair coin: {posterior_0:.3f}")
     print(f"Posterior probability of biased coin: {posterior_1:.3f}")
+    print()
+
+    print("According to the table of loss function...")
+    risk_0 = risk(Lambda00, Lambda01, posterior_0, posterior_1)
+    risk_1 = risk(Lambda10, Lambda11, posterior_0, posterior_1)
+    print(f"Expected risk of fair coin: {risk_0:.3f}")
+    print(f"Expected risk of biased coin: {risk_1:.3f}")
 
     # plot classifier
     x_values = np.arange(11)
