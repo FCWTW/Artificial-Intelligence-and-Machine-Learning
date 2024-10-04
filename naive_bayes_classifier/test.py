@@ -1,3 +1,4 @@
+import numpy as np
 from Gaussian_NB import Gaussian_NB
 from Bernoulli_NB import Bernoulli_NB
 import os
@@ -18,7 +19,7 @@ if __name__ == "__main__":
     data = np.concatenate([X_train,y_train.reshape(-1,1)],axis = 1)
 
     NB = Gaussian_NB(data)
-    NB.fit
+    NB.fit()
     print(sum(NB.predict(X_test)==y_test)/len(y_test))
 
     # directory = os.path.dirname(train_path)
