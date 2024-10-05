@@ -39,6 +39,10 @@
 >
 > ![log_post](/Image/log_post.png)
 >
+> log(prior) is included in the calculation of the likelihood function, so it does not appear.
+>
+> ![rrrrr](/Image/explain.png)
+>
 > np.exp is used at the end to obtain the original posterior probabilities.
 >
 > To facilitate interpretation, np.round is used to retain only the first ten decimal places of the classification results.
