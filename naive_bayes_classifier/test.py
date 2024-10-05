@@ -20,7 +20,13 @@ if __name__ == "__main__":
 
     NB = Gaussian_NB(data)
     NB.fit()
-    print(sum(NB.predict(X_test)==y_test)/len(y_test))
+    print(f"Accuracy of Gaussian NB is {sum(NB.predict(X_test)==y_test)/len(y_test)}")
+
+    posterior = NB.posterior(X_test)
+    print("posterior probabilities:")
+    for i in range(len(X_test)):
+        print(f"Sample{i}")
+        print(f"class0={posterior[i][0]}, class1={posterior[i][1]}, class2={posterior[i][2]}")
 
     # directory = os.path.dirname(train_path)
     # generate the submission file

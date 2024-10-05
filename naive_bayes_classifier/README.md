@@ -1,5 +1,61 @@
 # Naive Bayes Classifier Implementation
 
+## Major formula for classifier
+![formula](/Image/Bayes_formula.png)
+
+## Different between various Naive Bayes Classifier
+> All naive bayes classifier are base on Bayes formula above, but their likelihood function ( P(X|C) ) are different.
+>
+> Therefore, the types of data they apply to are also different. 
+
+## Likelihood function
+
+* ### Gaussian NB
+
+![G](/Image/Gaussian_likelihood.png)
+
+* ### Bernoulli NB
+
+![B](/Image/Bernoulli_likelihood.png)
+
+---
+## Code explanation for Gaussian NB
+
+### 1. prior probabilities
+
+> ![G_PR](/Image/GNB_prior.png)
+
+### 2. likelihood function
+
+> To avoid numerical overflows, logarithmic space calculations are used.
+>
+> The formula for likelihood function changes to:
+>
+> ![log_G_like](/Image/log_G_like.png)
+
+### 3. posterior probabilities
+>
+> Due to logarithmic space calculations, the formula for posterior probabilities (also the major formula at the beginning) changes to:
+>
+> ![log_post](/Image/log_post.png)
+>
+> np.exp is used at the end to obtain the original posterior probabilities.
+>
+> To facilitate interpretation, np.round is used to retain only the first ten decimal places of the classification results.
+>
+> ![result](/Image/G_result.png)
+
+### 4. classification result
+>
+> The predict function uses the logarithmic likelihood function value for classification.
+>
+> It doesn't affect the classification results.
+
+---
+## Code explanation for Bernoulli NB
+> 施工中
+
+---
 > <details>
 >  <summary>Reference</summary>
 > * <a href="https://www.learncodewithmike.com/2020/11/python-pandas-dataframe-tutorial.html">DataFrame處理教學</a><br>
