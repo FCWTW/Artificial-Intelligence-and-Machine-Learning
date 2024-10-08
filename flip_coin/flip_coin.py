@@ -1,6 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+'''
+程式碼來源:
+https://numustafa.medium.com/basics-of-machine-learning-understanding-bayesian-decision-theory-eb54ed405
+'''
+
 # define prior probabilities: p(C)
 C0 = 0.4
 C1 = 0.6
