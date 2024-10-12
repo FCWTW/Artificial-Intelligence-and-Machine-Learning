@@ -4,7 +4,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 
 # dataset path
-path = "dataset/classification_data.csv"
+path = "dataset/regression_data.csv"
 
 def generate_csv(X, y):
     directory = os.path.dirname(path)
@@ -17,6 +17,17 @@ def generate_csv(X, y):
     # combine test data and class label
     X.insert(X.shape[1], column="class", value=y_series)
     X.to_csv(os.path.join(directory, "output.csv"), index=False)
+
+# filter extreme values
+def remove_outliers_iqr(X, y):
+    Q1 = np.percentile(y, 25)
+    Q3 = np.percentile(y, 75)
+    IQR = Q3 - Q1
+    lower_bound = Q1 - 1.5 * IQR
+    upper_bound = Q3 + 1.5 * IQR
+
+    mask = (y >= lower_bound) & (y <= upper_bound)
+    return X[mask], y[mask]
 
 class Linear_regression():
     def __init__(self, X, y, alpha=0.1):
@@ -59,6 +70,7 @@ if __name__ == "__main__":
     df = pd.read_csv(path)
     X = df.iloc[:, :-1]
     y = df.iloc[:, -1]
+    X, y = remove_outliers_iqr(X, y)
 
     # split dataset and reshape
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=0)
@@ -72,5 +84,8 @@ if __name__ == "__main__":
     
     print(f'Mean Squared Error: {mse}')
     print(f'R² Score: {r2}')
+
+    # print(f"y_test range: {y_test.min()} - {y_test.max()}")
+    # print(f"y_pred range: {y_pred.min()} - {y_pred.max()}")
 
     generate_csv(X_test, pd.Series(y_pred, name="class"))
