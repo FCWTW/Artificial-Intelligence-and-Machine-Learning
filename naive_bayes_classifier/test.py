@@ -26,7 +26,7 @@ if __name__ == "__main__":
     X = df.iloc[:, :-1]
     y = df.iloc[:, -1]
 
-    # # split dataset and reshape for Gaussian_NB
+    # split dataset and reshape for Gaussian_NB
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=0)
     data = np.concatenate([X_train, y_train.to_numpy().reshape(-1,1)],axis = 1)
 
