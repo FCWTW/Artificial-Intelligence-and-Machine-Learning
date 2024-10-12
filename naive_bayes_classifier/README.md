@@ -23,6 +23,8 @@
 
 * ### [Milk Quality dataset](https://www.kaggle.com/datasets/cpluzshrijayan/milkquality)
 
+* ### self-made dataset
+
 ---
 ## Code explanation for Gaussian NB
 

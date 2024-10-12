@@ -63,7 +63,11 @@ class Gaussian_NB():
     # return the most likely class for each sample in test
     def predict(self, test):
         log_likelihood = self.likelihood(test)
-        pre = np.argmax(log_likelihood, axis = 1)
+        class_indices = np.argmax(log_likelihood, axis=1)
+        
+        # Map the index back to the original class label
+        unique_classes = np.unique(self.y)
+        pre = unique_classes[class_indices]
         return pre
 
     # print means and standard deviation
