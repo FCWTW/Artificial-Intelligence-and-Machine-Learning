@@ -6,7 +6,10 @@ path = "dataset/apriori_data.csv"
 
 class apriori():
     def __init__(self, file, min_support, min_confidence):
-        self.transactions = file['items'].apply(lambda x: x.split(','))     # prepare the dataset by splitting the 'items' into lists
+        file = file.applymap(lambda x: str(x).strip().upper() == 'TRUE')
+        
+        # 將每一筆交易中的 'True' 商品提取出來作為一個交易
+        self.transactions = file.apply(lambda row: set(file.columns[row]), axis=1)
         self.min_support = min_support
         self.min_confidence = min_confidence
     
@@ -70,7 +73,7 @@ class apriori():
 
 if __name__ == "__main__":
     df = pd.read_csv(path)
-    ap = apriori(df, 0.1, 0.5)
+    ap = apriori(df, 0.05, 0.5)
 
     # Run the Apriori algorithm
     frequent_itemsets = ap.apriori_algorithm()

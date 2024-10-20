@@ -63,6 +63,7 @@ class Gaussian_NB():
     # return the most likely class for each sample in test
     def predict(self, test):
         log_likelihood = self.likelihood(test)
+        # Maximum Likelihood Estimator (MLE)
         class_indices = np.argmax(log_likelihood, axis=1)
         
         # Map the index back to the original class label
@@ -79,3 +80,41 @@ class Gaussian_NB():
             print(f"Class {class_value}:")
             print(f"Mean: {m_str}")
             print(f"Standard Deviation: {s_str}")
+
+    # return the determinant of covariance matrix
+    def determinant_covariance(self):
+        determinants = {}
+        for class_value, rows in self.class_dict.items():
+            cov_matrix = np.cov(rows, rowvar=False)
+            determinants[class_value] = np.linalg.det(cov_matrix)
+        return determinants
+
+    # discriminant function g_i(x) for each class
+    def discriminant(self, test):
+        discriminant_values = {}
+        for i in np.unique(self.y):
+            # Calculate g_i(x)
+            g = -0.5 * np.sum(np.log(2 * np.pi * self.ms[i][1]))  # log determinant of diagonal covariance matrix
+            g += -0.5 * np.sum(((test - self.ms[i][0]) ** 2) / np.square(self.ms[i][1]), axis=1)  # quadratic term
+            g += np.log(self.prior[i])  # log prior
+            discriminant_values[i] = g
+        return discriminant_values
+    
+    def return_discriminant(self, test):
+        num_classes = len(np.unique(self.y))
+        result = np.zeros((test.shape[0], num_classes))
+        discriminant_values = self.discriminant(test)
+
+        # print(f"Discriminant values keys: {discriminant_values.keys()}")
+        for i in range(test.shape[0]):
+            num = test.index[i]
+            for class_value in discriminant_values.keys():
+                result[i][class_value-1] = discriminant_values[class_value][num]
+        return result
+
+    # Print discriminant function values
+    def print_discriminant(self, test):
+        discriminant_values = self.discriminant(test)
+        for class_value, values in discriminant_values.items():
+            print(f"Class {class_value} discriminant values:")
+            print(values)

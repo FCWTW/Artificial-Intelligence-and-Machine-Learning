@@ -4,7 +4,8 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 
 # dataset path
-path = "dataset/regression_data.csv"
+path = "dataset/regress1_trn.csv"
+path2 = "dataset/regress1_tst.csv"
 
 def generate_csv(X, y):
     directory = os.path.dirname(path)
@@ -46,16 +47,17 @@ class Linear_regression():
 
         # b = (X^T X + alpha * I)^(-1) X^T y
         b = np.linalg.inv(X.T @ X + self.alpha * I) @ X.T @ self.y
+        b = b.reshape(-1, 1)
         return b
     
     def predict(self, testX):
-        std_testX = (testX - self.mean) / self.std
+        std_testX = (testX.to_numpy() - self.mean) / self.std
         X = np.c_[np.ones((std_testX.shape[0], 1)), std_testX]
-        return X @ self.b
+        return np.dot(X, self.b).flatten()
     
     def standardize(self, X):
-        mean = np.mean(X, axis=0)
-        std = np.std(X, axis=0)
+        mean = np.mean(X, axis=0).to_numpy()
+        std = np.std(X, axis=0).to_numpy()
         return (X - mean)/std, mean, std
     
     def mean_squared_error(self, y_true, y_pred):
@@ -65,18 +67,27 @@ class Linear_regression():
         total_variance = np.sum((y_true - np.mean(y_true)) ** 2)
         residual_variance = np.sum((y_true - y_pred) ** 2)
         return 1 - (residual_variance / total_variance)
+    
+    def get_coefficients(self):
+        if self.b is None:
+            raise ValueError("please use fit() first")
+        
+        intercept = self.b[0]
+        coefficients = self.b[1:]
+        return intercept, coefficients
 
 if __name__ == "__main__":
     df = pd.read_csv(path)
     X = df.iloc[:, :-1]
     y = df.iloc[:, -1]
-    X, y = remove_outliers_iqr(X, y)
+    X_train, y_train = remove_outliers_iqr(X, y)
 
-    # split dataset and reshape
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=0)
-    
     Lr = Linear_regression(X_train, y_train)
     Lr.fit()
+
+    # df = pd.read_csv(path2)
+    # X_test = df.iloc[:, :]
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=0)
 
     y_pred = Lr.predict(X_test)
     mse = Lr.mean_squared_error(y_test, y_pred)
@@ -88,4 +99,16 @@ if __name__ == "__main__":
     # print(f"y_test range: {y_test.min()} - {y_test.max()}")
     # print(f"y_pred range: {y_pred.min()} - {y_pred.max()}")
 
-    generate_csv(X_test, pd.Series(y_pred, name="class"))
+    intercept, coefficients = Lr.get_coefficients()
+    
+    string = "f(x) = "
+    string += f"{np.round(intercept, 4)} "
+
+    for i in range(coefficients.shape[0]):
+        if coefficients[i] >= 0:
+            string += f"+ {np.round(coefficients[i], 4)}*x^{i + 1} "
+        else:
+            string += f"- {np.abs(np.round(coefficients[i], 4))}*x^{i + 1} "
+    print(string)
+
+    # generate_csv(X_test, pd.Series(y_pred, name="class"))

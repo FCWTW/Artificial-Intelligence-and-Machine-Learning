@@ -14,16 +14,13 @@
 
 ![G](/Image/Gaussian_likelihood.png)
 
-* ### Bernoulli NB
+* ### LDA Gaussian NB
 
-![B](/Image/Bernoulli_likelihood.png)
+![lda](/Image/LDA.png)
 
-## Dataset
-* ### iris dataset
+* ### Diagonal LDA Gaussian NB
 
-* ### [Milk Quality dataset](https://www.kaggle.com/datasets/cpluzshrijayan/milkquality)
-
-* ### self-made dataset
+![Dlda](/Image/Diagonal.png)
 
 ---
 ## Code explanation for Gaussian NB
@@ -61,10 +58,6 @@
 > The predict function uses the logarithmic likelihood function value for classification.
 >
 > It doesn't affect the classification results.
-
----
-## Code explanation for Bernoulli NB
-> 施工中
 
 ---
 > <details>
